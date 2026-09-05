@@ -1265,3 +1265,303 @@ body.is-music-theme .random-decor-item.is-ring::before {
     display: none;
   }
 }
+
+/* =========================================================
+   GALLERY OF A GIRL WHO'S TURNING 22
+   ========================================================= */
+
+.girl-gallery {
+  position: relative;
+  overflow: hidden;
+
+  padding-top: 110px;
+  padding-bottom: 130px;
+}
+
+
+/* ---------- HEADER ---------- */
+
+.girl-gallery__header {
+  width: min(1400px, calc(100% - 80px));
+  margin: 0 auto 65px;
+}
+
+.girl-gallery__header h2 {
+  margin: 10px 0 0;
+
+  max-width: 900px;
+
+  font-size: clamp(3.4rem, 7vw, 8rem);
+  line-height: .88;
+  letter-spacing: -.065em;
+
+  color: var(--ink);
+}
+
+.girl-gallery__header h2 span {
+  color: var(--blue);
+}
+
+.girl-gallery__note {
+  margin-top: 24px;
+
+  font-size: .85rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+
+  color: var(--muted);
+}
+
+
+/* ---------- GRID ---------- */
+
+.girl-gallery__grid {
+  width: min(1400px, calc(100% - 80px));
+
+  margin: 0 auto;
+
+  column-count: 4;
+  column-gap: 18px;
+}
+
+
+/* ---------- PHOTO ---------- */
+
+.girl-shot {
+  position: relative;
+
+  margin: 0 0 18px;
+
+  display: inline-block;
+  width: 100%;
+  break-inside: avoid;
+
+  overflow: hidden;
+
+  background: #fff;
+
+  border: 9px solid #fff;
+
+  box-shadow:
+    0 12px 35px rgba(18, 27, 38, .10);
+
+  transform: rotate(var(--girl-rotate, 0deg));
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+.girl-shot img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  aspect-ratio: 4 / 3;
+
+  object-fit: cover;
+  object-position: center;
+
+  filter: saturate(.93) contrast(1.02);
+
+  transition:
+    transform .45s ease,
+    filter .45s ease;
+}
+
+
+/*
+  Portrait images.
+  Sengaja tinggi karena kakge(6) & kakge(7)
+  memang portrait.
+*/
+.girl-shot--tall img {
+  aspect-ratio: 3 / 4;
+}
+
+
+/* Landscape lebar */
+.girl-shot--wide img {
+  aspect-ratio: 16 / 9;
+}
+
+
+/* ---------- SCRAPBOOK ROTATION ---------- */
+
+.girl-shot--one {
+  --girl-rotate: -1deg;
+}
+
+.girl-shot--two {
+  --girl-rotate: 1.3deg;
+}
+
+.girl-shot--three {
+  --girl-rotate: -.5deg;
+}
+
+.girl-shot--four {
+  --girl-rotate: 1deg;
+}
+
+.girl-shot--five {
+  --girl-rotate: -1.2deg;
+}
+
+.girl-shot--six {
+  --girl-rotate: .8deg;
+}
+
+.girl-shot--seven {
+  --girl-rotate: -1deg;
+}
+
+.girl-shot--eight {
+  --girl-rotate: .7deg;
+}
+
+
+/* ---------- HOVER ---------- */
+
+.girl-shot:hover {
+  z-index: 3;
+
+  transform:
+    rotate(0deg)
+    translateY(-6px);
+
+  box-shadow:
+    0 18px 44px rgba(18, 27, 38, .16);
+}
+
+.girl-shot:hover img {
+  transform: scale(1.025);
+
+  filter:
+    saturate(1)
+    contrast(1.02);
+}
+
+
+/* ---------- LITTLE DECORATIVE NUMBER ---------- */
+
+.girl-shot::after {
+  content: "22";
+
+  position: absolute;
+
+  right: 8px;
+  bottom: 7px;
+
+  padding: 4px 7px;
+
+  background: var(--blue);
+  color: #fff;
+
+  font-size: .58rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   MUSIC MODE COMPATIBILITY
+   Kalau website-mu memakai class .music-playing
+   ========================================================= */
+
+body.music-playing .girl-gallery__header h2 {
+  color: var(--ink);
+}
+
+body.music-playing .girl-gallery__header h2 span {
+  color: var(--blue);
+}
+
+body.music-playing .girl-shot {
+  background: var(--white);
+  border-color: var(--white);
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .girl-gallery {
+    padding-top: 90px;
+    padding-bottom: 100px;
+  }
+
+  .girl-gallery__header,
+  .girl-gallery__grid {
+    width: min(100% - 40px, 900px);
+  }
+
+  .girl-gallery__grid {
+    column-count: 2;
+  }
+
+  .girl-shot img,
+  .girl-shot--wide img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .girl-shot--tall img {
+    aspect-ratio: 3 / 4;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .girl-gallery {
+    padding-top: 70px;
+    padding-bottom: 80px;
+  }
+
+  .girl-gallery__header,
+  .girl-gallery__grid {
+    width: calc(100% - 28px);
+  }
+
+  .girl-gallery__header {
+    margin-bottom: 35px;
+  }
+
+  .girl-gallery__header h2 {
+    font-size: clamp(3rem, 16vw, 5.5rem);
+  }
+
+  .girl-gallery__grid {
+    column-count: 1;
+    column-gap: 0;
+  }
+
+  .girl-shot,
+  .girl-shot--wide,
+  .girl-shot--tall {
+    margin-bottom: 14px;
+    transform: none;
+  }
+
+  .girl-shot img,
+  .girl-shot--wide img {
+    aspect-ratio: auto;
+    height: auto;
+  }
+
+  .girl-shot--tall img {
+    aspect-ratio: auto;
+    height: auto;
+  }
+}
