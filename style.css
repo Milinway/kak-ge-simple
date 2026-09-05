@@ -1002,3 +1002,266 @@ body.is-music-theme .viewer-image-wrap {
     z-index: 2;
   }
 }
+
+/* =========================================================
+   REVISI VISUAL 05-09-2026
+   Ambient decor + music palette yang lebih seimbang
+   ========================================================= */
+
+/* --- Ambient decor: acak tetapi tetap terkontrol di whitespace --- */
+body {
+  position: relative;
+  overflow-x: hidden;
+}
+
+.random-decor-layer {
+  position: absolute;
+  top: 68px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+main,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+.random-decor-item {
+  position: absolute;
+  display: block;
+  aspect-ratio: auto;
+  opacity: var(--decor-opacity, .34);
+  transform-origin: center;
+  will-change: transform;
+}
+
+.random-decor-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter:
+    saturate(.88)
+    contrast(.96)
+    drop-shadow(0 8px 12px rgba(16, 19, 23, .10));
+}
+
+/* Beberapa item mendapat bentuk abstrak tipis di belakangnya. */
+.random-decor-item.is-ring::before {
+  content: "";
+  position: absolute;
+  inset: -14% -18%;
+  z-index: -1;
+  border: 1.5px solid rgba(23, 59, 103, .20);
+  border-radius: 50%;
+  transform: rotate(-14deg) scaleX(1.14);
+}
+
+.random-decor-item.is-tape::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 46%;
+  height: 16%;
+  z-index: -1;
+  background: rgba(220, 232, 244, .45);
+  transform: rotate(-7deg);
+}
+
+.random-decor-item.is-ghost img {
+  opacity: .70;
+  filter:
+    grayscale(.22)
+    saturate(.72)
+    contrast(.92)
+    drop-shadow(0 7px 10px rgba(16, 19, 23, .08));
+}
+
+/* Ambient decor hanya jadi aksen. Dekor utama per-section tetap lebih jelas. */
+.hero-decor,
+.stats-decor,
+.memories-decor,
+.letter-decor,
+.facts-decor {
+  z-index: 3;
+}
+
+/* --- Transisi warna dibuat lembut saat musik mulai/berhenti --- */
+body,
+.site-header,
+.nav-links,
+.photo-frame,
+.photo-card,
+.memory-card,
+.letter-paper,
+.memory-viewer,
+.viewer-close,
+.viewer-button,
+.viewer-preview-item,
+.music-player,
+.music-player-icon,
+.music-button,
+.primary-button,
+.photo-placeholder,
+.viewer-image-wrap {
+  transition:
+    background-color .55s ease,
+    color .40s ease,
+    border-color .45s ease,
+    box-shadow .45s ease;
+}
+
+/* =========================================================
+   MUSIC THEME — "Denim Dusk"
+   Bukan lagi invert hitam/putih. Background hanya bergeser ke
+   biru abu yang lembut agar nyaman dilihat dan foto tetap menonjol.
+   ========================================================= */
+body.is-music-theme {
+  --blue: #294f76;
+  --blue-2: #3d6d98;
+  --blue-soft: #c7d7e6;
+  --paper: #dce6ee;
+  --white: #f8fafb;
+  --ink: #172635;
+  --muted: #5f7182;
+  --line: #acbdcc;
+  --shadow: 0 18px 45px rgba(28, 53, 78, .14);
+
+  background:
+    radial-gradient(circle at 18% 8%, rgba(255, 255, 255, .72), transparent 32%),
+    radial-gradient(circle at 88% 34%, rgba(176, 198, 217, .26), transparent 34%),
+    linear-gradient(135deg, #dce6ee 0%, #eef2f4 46%, #d4e0e9 100%);
+  color: var(--ink);
+}
+
+body.is-music-theme .site-header {
+  background: rgba(232, 239, 244, .86);
+  border-bottom-color: rgba(41, 79, 118, .12);
+}
+
+body.is-music-theme .nav-links {
+  background: transparent;
+  color: var(--ink);
+}
+
+body.is-music-theme .brand,
+body.is-music-theme .kicker,
+body.is-music-theme .hero h1 span {
+  color: #294f76;
+}
+
+body.is-music-theme .photo-frame,
+body.is-music-theme .photo-card,
+body.is-music-theme .memory-card,
+body.is-music-theme .letter-paper,
+body.is-music-theme .memory-viewer,
+body.is-music-theme .viewer-close,
+body.is-music-theme .viewer-button,
+body.is-music-theme .viewer-preview-item {
+  background: rgba(248, 250, 251, .96);
+  color: var(--ink);
+  border-color: rgba(41, 79, 118, .18);
+}
+
+body.is-music-theme .quote,
+body.is-music-theme .letter-paper {
+  color: var(--ink);
+}
+
+body.is-music-theme .letter-paper {
+  background: rgba(247, 249, 251, .94);
+}
+
+body.is-music-theme .photo-placeholder,
+body.is-music-theme .viewer-image-wrap {
+  background-color: #d0dce6;
+  border-color: #9fb4c8;
+}
+
+body.is-music-theme .primary-button {
+  background: #294f76;
+  color: #f8fafb;
+  border-color: #294f76;
+  box-shadow: 6px 6px 0 #b8cadd;
+}
+
+body.is-music-theme .primary-button:hover {
+  background: #234568;
+  box-shadow: 8px 8px 0 #b8cadd;
+}
+
+/* Music player dibuat jadi pusat aksen, bukan seluruh halaman yang menjadi gelap. */
+body.is-music-theme .music-player,
+.music-player.is-playing {
+  background: #173b67;
+  color: #f6f9fc;
+  border-color: #173b67;
+  box-shadow: 6px 6px 0 #a9bfd4;
+}
+
+body.is-music-theme .music-player-label,
+body.is-music-theme .music-status,
+.music-player.is-playing .music-player-label,
+.music-player.is-playing .music-status {
+  color: #c7d8e8;
+}
+
+body.is-music-theme .music-player-icon,
+.music-player.is-playing .music-player-icon {
+  background: #edf4fa;
+  color: #173b67;
+}
+
+body.is-music-theme .equalizer i,
+.music-player.is-playing .equalizer i {
+  background: #8fb4d5;
+}
+
+body.is-music-theme .music-button,
+.music-player.is-playing .music-button {
+  background: transparent;
+  color: #f6f9fc;
+  border-color: #7898b6;
+}
+
+body.is-music-theme .music-button:hover,
+body.is-music-theme .music-button:focus-visible,
+.music-player.is-playing .music-button:hover,
+.music-player.is-playing .music-button:focus-visible {
+  background: rgba(255, 255, 255, .12);
+  color: #ffffff;
+}
+
+body.is-music-theme .music-button.is-active,
+.music-player.is-playing .music-button.is-active {
+  background: #f2f7fb;
+  color: #173b67;
+  border-color: #f2f7fb;
+  box-shadow: 3px 3px 0 #6f8eac;
+}
+
+/* Dekor background sedikit lebih tenang saat music theme aktif. */
+body.is-music-theme .random-decor-item img {
+  filter:
+    saturate(.78)
+    contrast(.92)
+    drop-shadow(0 8px 12px rgba(24, 50, 75, .09));
+}
+
+body.is-music-theme .random-decor-item.is-ring::before {
+  border-color: rgba(41, 79, 118, .16);
+}
+
+/* Mobile: ambient random decor disembunyikan karena dekor section sudah cukup. */
+@media (max-width: 720px) {
+  .random-decor-layer {
+    display: none;
+  }
+}

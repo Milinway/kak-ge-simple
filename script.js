@@ -124,9 +124,9 @@ function updateMusicState(isPlaying) {
   document.body.classList.toggle('is-music-theme', isPlaying);
   if (musicStatus) musicStatus.textContent = isPlaying ? 'Music playing' : 'Music paused';
   playMusicButton?.setAttribute('aria-pressed', String(isPlaying));
-  pauseMusicButton?.setAttribute('aria-pressed', String(!isPlaying));
+  pauseMusicButton?.setAttribute('aria-pressed', 'false');
   playMusicButton?.classList.toggle('is-active', isPlaying);
-  pauseMusicButton?.classList.toggle('is-active', !isPlaying);
+  pauseMusicButton?.classList.remove('is-active');
 }
 
 playMusicButton?.addEventListener('click', () => {
@@ -232,7 +232,7 @@ document
 
   });
 
-const unusedDecorAssets = [
+const ambientDecorAssets = [
   'alien2.png',
   'alien3.png',
   'alien4.png',
@@ -255,21 +255,119 @@ const unusedDecorAssets = [
 
 const randomDecorLayer = document.querySelector('.random-decor-layer');
 
-unusedDecorAssets.forEach((asset, index) => {
-  const item = document.createElement('span');
-  const image = document.createElement('img');
-  const size = 44 + Math.random() * 64;
-  const rotation = -18 + Math.random() * 36;
+/*
+  Pseudo-random dengan seed tetap:
+  komposisinya terlihat acak/abstrak, tapi tidak "lompat-lompat"
+  setiap kali halaman direfresh.
+*/
+function seededRandom(seed) {
+  let value = seed >>> 0;
+  return () => {
+    value += 0x6D2B79F5;
+    let t = value;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
 
-  item.className = 'random-decor-item';
-  item.style.left = `${2 + Math.random() * 94}%`;
-  item.style.top = `${2 + Math.random() * 94}%`;
-  item.style.width = `${size}px`;
-  item.style.transform = `rotate(${rotation}deg)`;
-  item.style.opacity = `${0.58 + Math.random() * 0.3}`;
-  item.style.zIndex = String(index % 3);
-  image.src = `assets/decor/${asset}`;
-  image.alt = '';
-  item.append(image);
-  randomDecorLayer?.append(item);
+function shuffleWithRandom(items, random) {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function placeAmbientDecor() {
+  if (!randomDecorLayer) return;
+
+  randomDecorLayer.replaceChildren();
+
+  const viewportWidth = document.documentElement.clientWidth;
+  if (viewportWidth <= 720) return;
+
+  const random = seededRandom(22092004);
+  const assets = shuffleWithRandom(ambientDecorAssets, random);
+  const layerRect = randomDecorLayer.getBoundingClientRect();
+  const layerPageTop = layerRect.top + window.scrollY;
+
+  const sections = [
+    document.querySelector('.hero'),
+    document.querySelector('.stats'),
+    document.querySelector('.memories'),
+    document.querySelector('.flashback'),
+    document.querySelector('.letter-section'),
+    document.querySelector('.facts'),
+    document.querySelector('footer')
+  ].filter(Boolean);
+
+  /* Desktop lebar dapat dua aksen per area; tablet cukup satu. */
+  const itemsPerSection = viewportWidth >= 1180 ? 2 : 1;
+  let assetIndex = 0;
+
+  sections.forEach((section, sectionIndex) => {
+    const rect = section.getBoundingClientRect();
+    const sectionPageTop = rect.top + window.scrollY;
+
+    for (let slot = 0; slot < itemsPerSection; slot += 1) {
+      if (assetIndex >= assets.length) return;
+
+      const asset = assets[assetIndex];
+      const item = document.createElement('span');
+      const image = document.createElement('img');
+
+      const size = Math.round(62 + random() * 76);
+      const rotation = Math.round(-22 + random() * 44);
+      const opacity = (0.24 + random() * 0.25).toFixed(2);
+
+      /*
+        Penempatan dibiasakan ke gutter kiri/kanan supaya gambar dekor
+        tetap berada di whitespace dan tidak mengganggu teks/foto utama.
+      */
+      const useLeft = (sectionIndex + slot) % 2 === 0;
+      const jitterX = (random() - 0.5) * 34;
+
+      let x;
+      if (useLeft) {
+        x = rect.left - size * (0.52 + random() * 0.18) + jitterX;
+      } else {
+        x = rect.right - size * (0.45 - random() * 0.12) + jitterX;
+      }
+
+      x = Math.max(8, Math.min(viewportWidth - size - 8, x));
+
+      const yRatio = slot === 0
+        ? 0.16 + random() * 0.28
+        : 0.58 + random() * 0.24;
+      const y = sectionPageTop - layerPageTop + rect.height * yRatio;
+
+      item.className = 'random-decor-item';
+      if ((assetIndex + sectionIndex) % 3 === 0) item.classList.add('is-ring');
+      if ((assetIndex + sectionIndex) % 4 === 1) item.classList.add('is-tape');
+      if ((assetIndex + sectionIndex) % 5 === 2) item.classList.add('is-ghost');
+
+      item.style.left = `${Math.round(x)}px`;
+      item.style.top = `${Math.round(y)}px`;
+      item.style.width = `${size}px`;
+      item.style.transform = `rotate(${rotation}deg)`;
+      item.style.setProperty('--decor-opacity', opacity);
+
+      image.src = `assets/decor/${asset}`;
+      image.alt = '';
+      item.append(image);
+      randomDecorLayer.append(item);
+
+      assetIndex += 1;
+    }
+  });
+}
+
+window.addEventListener('load', placeAmbientDecor);
+
+let ambientDecorResizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(ambientDecorResizeTimer);
+  ambientDecorResizeTimer = setTimeout(placeAmbientDecor, 180);
 });
