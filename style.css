@@ -305,14 +305,26 @@ button { font: inherit; }
 .facts ul { list-style: none; padding: 0; margin: 34px 0 0; display: grid; gap: 11px; }
 .facts li { position: relative; padding-left: 24px; font-size: 1.04rem; }
 .facts li::before { content: "✦"; position: absolute; left: 0; color: var(--blue); }
-.fun-photo-stack { position: relative; min-height: 570px; }
+.fun-photo-stack { position: relative; min-height: 620px; }
 .photo-card { position: absolute; width: 58%; padding: 10px 10px 34px; background: #fff; box-shadow: var(--shadow); }
-.photo-card:nth-child(1) { left: 0; top: 30px; }
-.photo-card:nth-child(2) { right: 0; top: 150px; }
-.photo-card:nth-child(3) { left: 18%; bottom: 10px; width: 45%; }
+.photo-card:nth-child(1) { left: 0; top: 20px; width: 54%; }
+.photo-card:nth-child(2) { right: 0; top: 135px; width: 54%; }
+.photo-card:nth-child(3) { left: 2%; bottom: 8px; width: 27%; }
+.photo-card:nth-child(4) { left: 36.5%; bottom: 28px; width: 27%; }
+.photo-card:nth-child(5) { right: 2%; bottom: 0; width: 27%; }
 .rotate-left { transform: rotate(-4deg); }
 .rotate-right { transform: rotate(5deg); }
 .square { aspect-ratio: 1; }
+.fun-photo-stack .photo-slot {
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: 1;
+}
+.fun-photo-stack .photo-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .moodboard { padding-top: 20px; }
 .sticker-board { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -428,7 +440,7 @@ footer {
   .stats { grid-template-columns: 1fr; }
   .memory-card, .memory-card.large, .memory-card.wide, .memory-card.tall, .memory-card.polaroid { grid-column: span 6; }
   .split-section, .facts { grid-template-columns: 1fr; gap: 40px; }
-  .fun-photo-stack { min-height: 520px; max-width: 500px; width: 100%; margin: auto; }
+  .fun-photo-stack { min-height: 620px; max-width: 500px; width: 100%; margin: auto; }
   .hero-decor { left: 0; top: 5%; }
   .memories-decor, .caption-decor, .facts-decor { right: 0; }
 }
@@ -453,7 +465,27 @@ footer {
   .memory-card, .memory-card.large, .memory-card.wide, .memory-card.tall, .memory-card.polaroid { grid-column: 1; }
   .letter-columns { columns: 1; }
   .letter-head { flex-direction: column; gap: 4px; }
-  .fun-photo-stack { min-height: 450px; }
+  .fun-photo-stack {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 14px;
+    min-height: 0;
+  }
+  .fun-photo-stack .photo-card {
+    position: relative;
+    inset: auto;
+    width: auto;
+    margin: 0;
+  }
+  .fun-photo-stack .photo-card:nth-child(1),
+  .fun-photo-stack .photo-card:nth-child(2) {
+    grid-column: span 3;
+  }
+  .fun-photo-stack .photo-card:nth-child(3),
+  .fun-photo-stack .photo-card:nth-child(4),
+  .fun-photo-stack .photo-card:nth-child(5) {
+    grid-column: span 2;
+  }
   footer { flex-direction: column; }
   .music-player { right: 18px; bottom: 18px; }
   .decor-cluster { transform: scale(.82); transform-origin: top right; }
