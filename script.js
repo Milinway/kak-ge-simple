@@ -286,7 +286,7 @@ function placeAmbientDecor() {
   randomDecorLayer.replaceChildren();
 
   const viewportWidth = document.documentElement.clientWidth;
-  if (viewportWidth <= 720) return;
+  if (window.matchMedia('(max-width: 650px)').matches) return;
 
   const random = seededRandom(22092004);
   const assets = shuffleWithRandom(ambientDecorAssets, random);
@@ -304,7 +304,7 @@ function placeAmbientDecor() {
   ].filter(Boolean);
 
   /* Desktop lebar dapat dua aksen per area; tablet cukup satu. */
-  const itemsPerSection = viewportWidth >= 1180 ? 2 : 1;
+  const itemsPerSection = window.matchMedia('(min-width: 1024px)').matches ? 2 : 1;
   let assetIndex = 0;
 
   sections.forEach((section, sectionIndex) => {
