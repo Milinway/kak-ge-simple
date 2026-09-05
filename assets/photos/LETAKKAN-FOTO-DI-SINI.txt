@@ -1,0 +1,8 @@
+Masukkan foto kamu di folder ini.
+
+Nama slot:
+hero
+memory-01 sampai memory-11
+fun-01 sampai fun-03
+
+Ekstensi yang didukung otomatis: jpg, jpeg, png, webp.
