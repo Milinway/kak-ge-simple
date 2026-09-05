@@ -19,6 +19,7 @@ body {
   color: var(--ink);
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.55;
+  transition: background-color .45s ease, color .45s ease;
 }
 img { display: block; width: 100%; height: 100%; object-fit: cover; }
 a { color: inherit; text-decoration: none; }
@@ -108,6 +109,26 @@ button { font: inherit; }
   z-index: 2;
   pointer-events: none;
 }
+.random-decor-layer {
+  position: absolute;
+  top: 68px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.random-decor-item {
+  position: absolute;
+  aspect-ratio: 1;
+  display: block;
+}
+.random-decor-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 .sticker {
   display: inline-block;
   padding: 8px 11px;
@@ -125,9 +146,9 @@ button { font: inherit; }
 .sticker--image { padding: 5px; overflow: hidden; }
 .sticker--image img { width: 100%; height: 100%; object-fit: contain; }
 .sticker--small { width: 42px; height: 42px; padding: 3px; }
-.sticker--polaroid.sticker--small { min-width: 0; width: 58px; height: 58px; padding: 4px; }
+.sticker--polaroid.sticker--small { min-width: 0; width: 70px; height: 70px; padding: 4px; }
 .sticker--label { padding: 7px 12px; background: var(--blue-soft); }
-.sticker--paper { padding: 13px 15px; background: #fff; box-shadow: 5px 5px 0 #c7ced6; }
+.sticker--paper { padding: 13px 15px; background: #fff; box-shadow: 5px 5px 0 #c7ced6; opacity: .46; }
 .sticker--polaroid { padding: 8px 8px 10px; min-width: 76px; background: var(--white); }
 .sticker--polaroid b, .sticker--polaroid small { display: block; }
 .sticker--polaroid b { padding: 13px 5px; border: 1px dashed var(--muted); color: var(--blue); font-size: .7rem; }
@@ -145,10 +166,12 @@ button { font: inherit; }
 .stats-decor { top: -14px; right: -14px; display: flex; align-items: center; gap: 38px; }
 .stats-decor .sticker:nth-child(2) { margin-top: 25px; }
 .memories-decor { top: 72px; right: -20px; display: grid; gap: 58px; }
-.memories-decor .sticker:nth-child(2) { margin-left: 42px; }
+.decor-memory-oasis { width: 55px; margin-right: 18px; transform: rotate(6deg); }
+.decor-memory-cat { width: 20px; margin-left: 22px; transform: rotate(-7deg); }
 .caption-decor { right: -10px; bottom: 48px; display: grid; gap: 16px; }
 .caption-decor .doodle { margin-left: 38px; }
 .letter-decor { top: 20px; right: 2px; display: flex; gap: 13px; align-items: start; }
+.decor-letter-abe { width: 82px; margin-top: 4px; transform: rotate(5deg); }
 .facts-decor { right: -18px; bottom: 28px; display: grid; gap: 52px; }
 .facts-decor .sticker:nth-child(2) { margin-left: 42px; }
 .mood-decor { top: 10px; right: -4px; display: flex; gap: 12px; }
@@ -374,6 +397,15 @@ footer {
   line-height: 1;
 }
 .music-button:hover, .music-button:focus-visible { background: var(--blue); color: var(--white); }
+.music-button.is-active {
+  background: var(--blue);
+  color: var(--white);
+  border-color: var(--blue);
+  box-shadow: 3px 3px 0 var(--blue-soft);
+}
+.music-button.is-active:hover, .music-button.is-active:focus-visible {
+  background: var(--blue-2);
+}
 .equalizer { display: flex; align-items: end; gap: 2px; height: 18px; }
 .equalizer i { display: block; width: 3px; height: 5px; background: var(--blue); }
 .equalizer i:nth-child(2) { height: 11px; }
@@ -431,4 +463,542 @@ footer {
   .letter-decor { top: 10px; right: 0; }
   .mood-decor { top: 0; right: 0; }
   .footer-decor { position: relative; top: auto; left: auto; order: -1; }
+}
+
+
+/* =========================================================
+   REVISI GALERI + CLEANUP
+   Tempel di PALING BAWAH style.css
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   1. MEMORY GALLERY
+   Foto mengikuti rasio aslinya.
+   Bingkai tidak lagi memaksa 4:3 / 3:4.
+   --------------------------------------------------------- */
+
+.memory-grid {
+  display: grid !important;
+
+  /* 3 kartu ukuran standar pada desktop */
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+
+  /*
+    Baris kecil ini nanti dihitung oleh JavaScript
+    untuk membuat efek masonry tanpa space kosong besar.
+  */
+  grid-auto-rows: 8px;
+
+  column-gap: 18px !important;
+  row-gap: 10px !important;
+
+  align-items: start;
+  width: 100%;
+}
+
+
+/*
+  Semua variasi lama seperti .large, .wide, .tall
+  dibuat berukuran standar agar layout lebih konsisten.
+*/
+.memory-card,
+.memory-card.large,
+.memory-card.wide,
+.memory-card.tall,
+.memory-card.polaroid {
+  grid-column: auto !important;
+
+  width: 100% !important;
+  max-width: none !important;
+
+  margin: 0 !important;
+
+  padding: 10px 10px 28px;
+
+  background: #fff;
+  border: 1px solid #d7dce1;
+
+  box-shadow:
+    0 10px 24px rgba(16, 19, 23, 0.08);
+
+  /*
+    Rotasi dibuat sangat kecil.
+    Kalau mau benar-benar lurus ubah menjadi:
+    transform: none !important;
+  */
+  transform: rotate(var(--r, 0deg));
+}
+
+
+/* Rotasi scrapbook tipis saja */
+.memory-card:nth-child(odd) {
+  --r: -0.35deg;
+}
+
+.memory-card:nth-child(even) {
+  --r: 0.35deg;
+}
+
+
+/* Jangan memaksa rasio foto */
+.memory-card .photo-slot,
+.memory-card.tall .photo-slot,
+.memory-card.large .photo-slot,
+.memory-card.wide .photo-slot,
+.memory-card.polaroid .photo-slot {
+  aspect-ratio: auto !important;
+
+  width: 100%;
+  height: auto !important;
+
+  min-height: 0 !important;
+
+  overflow: hidden;
+
+  background: #e8ebee;
+}
+
+
+/*
+  Saat foto sudah ditemukan oleh script.js,
+  ukuran slot mengikuti ukuran foto sebenarnya.
+*/
+.memory-card .photo-slot.has-photo {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+
+/*
+  INI BAGIAN PENTING:
+  foto tidak lagi dipaksa memenuhi frame dengan height:100%.
+*/
+.memory-card .photo-slot.has-photo img {
+  display: block !important;
+
+  width: 100% !important;
+  height: auto !important;
+
+  max-width: 100%;
+
+  object-fit: contain !important;
+  object-position: center;
+
+  position: static !important;
+}
+
+
+/* Placeholder tetap punya tinggi saat fotonya belum dimasukkan */
+.memory-card .photo-slot:not(.has-photo) {
+  min-height: 190px !important;
+}
+
+
+/* Caption tetap menempel rapi di bawah foto */
+.memory-card figcaption {
+  padding: 10px 2px 0;
+
+  font-size: 0.78rem;
+  font-weight: 900;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+
+/* Hover dibuat ringan agar masonry tidak terlihat lompat */
+.memory-card:hover {
+  transform:
+    rotate(0deg)
+    translateY(-3px);
+}
+
+
+/* ---------------------------------------------------------
+   2. HAPUS LOGO KOPI KENANGAN BESAR DI AREA STATS
+
+   No.1 BA kopken TETAP ADA.
+   Yang hilang hanya gambar dekorasinya.
+   --------------------------------------------------------- */
+
+.stats .kopken-decoration,
+.stats .kopken-decor {
+  display: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   3. HAPUS ELEMEN BESAR CONVERSE + KOPI KENANGAN
+      DI BAGIAN PALING BAWAH
+
+   Pada struktur awal project, bagian tersebut adalah
+   section .moodboard.
+   --------------------------------------------------------- */
+
+.moodboard {
+  display: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   4. RESPONSIVE MEMORY GALLERY
+   --------------------------------------------------------- */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .memory-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+
+/* HP */
+@media (max-width: 600px) {
+  .memory-grid {
+    grid-template-columns: 1fr !important;
+
+    column-gap: 0 !important;
+  }
+
+  .memory-card,
+  .memory-card.large,
+  .memory-card.wide,
+  .memory-card.tall,
+  .memory-card.polaroid {
+    width: 100% !important;
+
+    transform: none;
+  }
+
+  .memory-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* =========================================================
+   GRAPHIC / STICKER DECORATIONS
+   ========================================================= */
+
+.decor {
+  position: absolute;
+  display: block;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.08));
+}
+
+.decor-memory-cat {
+  width: 72px;
+  height: auto;
+  top: 98px;
+  right: 0;
+  margin: 0;
+}
+
+.memories-decor {
+  width: 132px;
+  height: 205px;
+}
+
+.decor-memory-oasis {
+  width: 62px;
+  top: 0;
+  right: 42px;
+  margin: 0;
+}
+
+.hero-decor {
+  inset: 0;
+  pointer-events: none;
+}
+
+.decor-denim {
+  width: 76px;
+  right: 43%;
+  top: 34%;
+  transform: rotate(7deg);
+}
+
+.stats {
+  position: relative;
+  padding-inline: 80px;
+}
+
+.stats-decor {
+  inset: 0;
+  pointer-events: none;
+}
+
+.decor-f1 {
+  width: 100px;
+  left: -26px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-6deg);
+}
+
+.decor-kopken {
+  width: 145px;
+  right: -58px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-5deg);
+}
+
+.facts {
+  position: relative;
+  overflow: visible;
+}
+
+.facts-decor {
+  top: 0;
+  right: 0;
+  width: 62%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.decor-jedai { width: 74px; left: -4%; top: 8%; transform: rotate(-16deg); }
+.decor-oasis { width: 98px; left: 3%; top: 65%; transform: rotate(5deg); }
+.decor-convers { width: 88px; left: 34%; top: 25%; transform: rotate(13deg); }
+.decor-crocs { width: 102px; left: 23%; bottom: 3%; transform: rotate(-15deg); }
+.decor-jeans { width: 108px; right: 19%; bottom: 7%; transform: rotate(11deg); }
+.decor-kipas { width: 84px; right: 4%; bottom: 27%; transform: rotate(18deg); }
+.decor-kopken-drink { width: 112px; right: -3%; top: 2%; transform: rotate(-9deg); }
+
+@media (max-width: 900px) {
+  .stats { padding-inline: 30px; }
+  .decor-f1 { width: 72px; left: -10px; }
+  .decor-kopken { width: 105px; right: -16px; }
+  .decor-denim { width: 60px; right: auto; left: 5%; top: 44%; }
+  .facts-decor { opacity: .9; }
+  .decor-jedai { width: 60px; left: -2%; top: 6%; }
+  .decor-convers { width: 75px; left: 38%; top: 28%; }
+  .decor-oasis { width: 80px; left: 1%; top: 67%; }
+  .decor-crocs { width: 75px; left: 27%; bottom: 3%; }
+  .decor-jeans { width: 82px; right: 17%; bottom: 8%; }
+  .decor-kipas { width: 68px; right: 3%; bottom: 25%; }
+  .decor-kopken-drink { width: 90px; right: -2%; top: 2%; }
+  .memories-decor { width: 120px; height: 180px; }
+  .decor-memory-oasis { width: 56px; right: 36px; }
+  .decor-memory-cat { width: 62px; top: 84px; }
+  .decor-letter-abe { width: 70px; }
+}
+
+@media (max-width: 600px) {
+  .decor-denim,
+  .decor-kopken-drink,
+  .decor-jeans { display: none; }
+  .decor-f1 { width: 55px; left: 5px; top: 20%; }
+  .decor-kopken { width: 80px; right: 5px; top: 80%; }
+  .facts-decor { width: 100%; }
+  .decor-jedai { left: auto; right: 8px; top: 2%; width: 48px; }
+  .decor-oasis { left: auto; right: 10px; top: 58%; width: 65px; }
+  .decor-convers { left: auto; right: 14px; top: 38%; width: 58px; }
+  .decor-crocs,
+  .decor-kipas { display: none; }
+  .memories-decor { top: 92px; right: 0; width: 104px; height: 160px; display: grid; z-index: 1; }
+  .decor-memory-oasis { width: 48px; right: 30px; }
+  .decor-memory-cat { width: 50px; top: 72px; }
+  .letter-decor { top: 12px; right: 4px; gap: 8px; }
+  .decor-letter-abe { width: 58px; margin-top: 2px; }
+}
+
+/* =========================================================
+   MUSIC THEME
+   Text: black becomes white, blue becomes light blue, white becomes black.
+   Background: white becomes blue.
+   ========================================================= */
+
+body.is-music-theme {
+  --blue: #dce8f4;
+  --blue-2: #b7c9dc;
+  --blue-soft: #6e8bab;
+  --paper: #173b67;
+  --white: #000000;
+  --ink: #ffffff;
+  --muted: #dce8f4;
+  --line: #6e8bab;
+  --shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
+}
+
+body.is-music-theme .site-header {
+  background: transparent;
+  border-bottom-color: transparent;
+}
+
+body.is-music-theme .nav-links {
+  background: transparent;
+}
+
+body.is-music-theme .hero h1 span {
+  color: #08264a;
+}
+
+body.is-music-theme .photo-frame {
+  background: #ffffff;
+}
+
+body.is-music-theme .quote {
+  color: #000000;
+}
+
+body.is-music-theme .photo-frame,
+body.is-music-theme .photo-card,
+body.is-music-theme .memory-card,
+body.is-music-theme .letter-paper,
+body.is-music-theme .memory-viewer,
+body.is-music-theme .viewer-close,
+body.is-music-theme .viewer-button,
+body.is-music-theme .viewer-preview-item,
+body.is-music-theme .nav-links,
+body.is-music-theme .music-player,
+body.is-music-theme .music-button {
+  background: var(--white);
+  color: var(--ink);
+}
+
+body.is-music-theme .photo-frame,
+body.is-music-theme .photo-card,
+body.is-music-theme .memory-card,
+body.is-music-theme .letter-paper,
+body.is-music-theme .music-player {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+body.is-music-theme .memory-card,
+body.is-music-theme .photo-card {
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
+}
+
+body.is-music-theme .music-player-icon {
+  background: var(--blue);
+  color: var(--white);
+}
+
+body.is-music-theme .primary-button {
+  background: var(--white);
+  color: var(--ink);
+  border-color: var(--white);
+}
+
+body.is-music-theme .primary-button:hover {
+  box-shadow: 8px 8px 0 var(--blue-soft);
+}
+
+body.is-music-theme .letter-paper {
+  background: #08264a;
+}
+
+body.is-music-theme .photo-placeholder,
+body.is-music-theme .viewer-image-wrap {
+  background-color: #274f7d;
+  border-color: #b7c9dc;
+}
+
+/* =========================================================
+   MOBILE DECORATIONS
+   Keep text clear and let stickers sit around the photo area.
+   ========================================================= */
+
+@media (max-width: 650px) {
+  .hero-copy,
+  .hero-visual,
+  .stats article,
+  .facts-copy,
+  .flashback .sticky-title {
+    position: relative;
+    z-index: 3;
+  }
+
+  .flashback .sticky-title,
+  .facts-copy {
+    text-align: center;
+  }
+
+  .hero-decor,
+  .stats-decor,
+  .facts-decor {
+    display: block;
+    z-index: 1;
+  }
+
+  .memories-decor {
+    display: grid;
+    top: 86px;
+    right: 0;
+    width: 104px;
+    height: 160px;
+    z-index: 1;
+  }
+
+  .decor-memory-oasis { width: 48px; right: 30px; }
+  .decor-memory-cat { width: 50px; top: 72px; }
+
+  .hero-decor {
+    left: 0;
+    right: 0;
+    top: 0;
+    transform: none;
+  }
+
+  .decor-denim {
+    display: block;
+    width: 58px;
+    right: 3%;
+    left: auto;
+    top: 45%;
+    opacity: .82;
+  }
+
+  .stats-decor {
+    top: 0;
+    right: 0;
+    transform: none;
+  }
+
+  .decor-f1 {
+    width: 54px;
+    left: -8px;
+    top: 17%;
+    opacity: .82;
+  }
+
+  .decor-kopken {
+    width: 78px;
+    right: -5px;
+    top: 73%;
+    opacity: .82;
+  }
+
+  .facts-decor {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 450px;
+    opacity: .78;
+    transform: none;
+  }
+
+  .facts-decor .decor {
+    display: block;
+  }
+
+  .decor-jedai { width: 48px; left: 2%; top: 3%; }
+  .decor-oasis { width: 62px; left: -2%; top: 57%; }
+  .decor-convers { width: 57px; left: 33%; top: 21%; }
+  .decor-crocs { width: 68px; left: 16%; bottom: 1%; }
+  .decor-jeans { width: 72px; right: 28%; bottom: 1%; }
+  .decor-kipas { width: 58px; right: 0; bottom: 20%; }
+  .decor-kopken-drink { width: 76px; right: -3%; top: 1%; }
+
+  .fun-photo-stack {
+    position: relative;
+    z-index: 2;
+  }
 }
