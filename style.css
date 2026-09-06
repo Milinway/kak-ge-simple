@@ -107,7 +107,7 @@ button, input { font: inherit; }
   width:var(--w);
   transform:rotate(var(--r));
   transform-origin:center;
-  opacity:1;
+  opacity:.58;
   filter: drop-shadow(0 8px 7px rgba(15,27,40,.16));
   user-select:none;
   -webkit-user-drag:none;
@@ -117,6 +117,14 @@ button, input { font: inherit; }
   background:rgba(255,255,255,.96);
   border:1px solid rgba(16,21,27,.12);
   box-shadow:6px 7px 0 var(--blue-soft);
+  opacity:.72;
+}
+
+@media (min-width: 951px) {
+  .memories .decor-surface img:nth-child(3) { left:-4%; top:58%; }
+  .facts .decor-surface img:nth-child(2) { left:6%; top:5%; }
+  .facts .decor-surface img:nth-child(4) { left:92%; top:8%; }
+  .letter-section .decor-surface img:nth-child(2) { left:94%; top:8%; }
 }
 
 /* Hero */
