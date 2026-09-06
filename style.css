@@ -383,3 +383,188 @@ body.is-music-theme .asset-sticker { filter:drop-shadow(0 9px 7px rgba(16,41,70,
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior:auto !important; animation:none !important; transition:none !important; }
 }
+
+/* Hero prologue */
+.hero-prologue {
+  max-width: 640px;
+  margin: 0 0 28px;
+  padding: 20px 22px;
+  background: rgba(255,255,255,.76);
+  border: 1px solid rgba(16,21,27,.12);
+  box-shadow: 8px 9px 0 var(--blue-soft);
+  transform: rotate(-1deg);
+}
+.hero-prologue p {
+  margin: 0 0 10px;
+  font-size: .94rem;
+  line-height: 1.62;
+}
+.hero-prologue p:last-child { margin-bottom: 0; }
+.hero-prologue strong { color: var(--navy); }
+
+/* Starred */
+.starred {
+  display: grid;
+  grid-template-columns: minmax(320px, .92fr) minmax(0, 1.08fr);
+  gap: 54px;
+  align-items: start;
+  background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(220,231,242,.30));
+}
+.starred-copy {
+  position: sticky;
+  top: 110px;
+}
+.starred h2 {
+  margin: 0;
+  font-size: clamp(3rem, 6.2vw, 6.8rem);
+  line-height: .92;
+  letter-spacing: -.065em;
+}
+.starred h2 span { color: var(--navy); }
+.starred-text {
+  margin-top: 28px;
+  padding: 28px 28px 30px;
+  background: rgba(255,255,255,.82);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+.starred-text::before {
+  content: "⭐ kept close";
+  position: absolute;
+  right: 18px;
+  top: -14px;
+  padding: 7px 12px;
+  background: var(--navy);
+  color: #fff;
+  font-size: .64rem;
+  letter-spacing: .14em;
+  font-weight: 950;
+  text-transform: uppercase;
+  box-shadow: 5px 5px 0 var(--blue-soft);
+}
+.starred-text p {
+  margin: 0 0 18px;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.starred-text p:last-child { margin-bottom: 0; }
+.starred-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+.starred-card {
+  margin: 0;
+  padding: 10px 10px 26px;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  transform: rotate(var(--s-r));
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.starred-card:nth-child(odd) { --s-r: -.8deg; }
+.starred-card:nth-child(even) { --s-r: .9deg; }
+.starred-card--hero {
+  grid-column: 1 / -1;
+  --s-r: -.35deg;
+}
+.starred-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #e0e5ea;
+  background: #edf2f6;
+}
+.starred-card figcaption {
+  padding-top: 10px;
+  font-size: .7rem;
+  font-weight: 950;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+.starred-card:hover {
+  transform: rotate(0deg) translateY(-5px);
+  box-shadow: 0 22px 46px rgba(15,27,40,.16);
+}
+
+/* Optional future decorative assets */
+.optional-decor-hidden { display: none !important; }
+
+body.is-music-theme .hero-prologue,
+body.is-music-theme .starred-text {
+  background: rgba(251,250,246,.88);
+}
+
+@media (max-width: 950px) {
+  .starred {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+  .starred-copy {
+    position: relative;
+    top: auto;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-prologue {
+    margin-bottom: 22px;
+    padding: 16px 15px;
+    box-shadow: 5px 6px 0 var(--blue-soft);
+    transform: none;
+  }
+  .hero-prologue p {
+    font-size: .88rem;
+    line-height: 1.58;
+  }
+
+  .starred {
+    display: block;
+  }
+  .starred-copy {
+    width: calc(100% - 28px);
+    margin: 0 auto 26px;
+  }
+  .starred h2 {
+    font-size: clamp(3rem, 15vw, 5.4rem);
+  }
+  .starred-text {
+    margin-top: 22px;
+    padding: 22px 16px 24px;
+  }
+  .starred-text::before {
+    right: 10px;
+    top: -11px;
+    font-size: .54rem;
+    padding: 6px 9px;
+  }
+  .starred-text p {
+    font-size: .94rem;
+    line-height: 1.7;
+  }
+  .starred-gallery {
+    width: calc(100% - 28px);
+    margin: 0 auto;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .starred-card,
+  .starred-card--hero {
+    grid-column: 1;
+    padding: 7px 7px 20px;
+    transform: none;
+  }
+  .starred-card figcaption {
+    font-size: .58rem;
+    letter-spacing: .1em;
+  }
+}
+
+@media (max-width: 390px) {
+  .hero-prologue p {
+    font-size: .84rem;
+  }
+}
