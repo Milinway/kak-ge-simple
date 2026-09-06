@@ -99,7 +99,7 @@ button, input { font: inherit; }
 .section-note { color:var(--muted); font-weight:700; margin-top:18px; }
 
 /* Generic decoration system */
-.decor-surface { position:absolute; inset:0; z-index:1; pointer-events:none; }
+.decor-surface { position:absolute; inset:0; z-index:0 !important; pointer-events:none; }
 .asset-sticker {
   position:absolute;
   left:var(--x);
@@ -305,8 +305,14 @@ body.is-music-theme .asset-sticker { filter:drop-shadow(0 9px 7px rgba(16,41,70,
   .section::before { width:190px; height:190px; right:-105px; top:10%; }
   .section::after { font-size:7rem; left:1%; bottom:1%; }
 
+  .section > :not(.decor-surface) { z-index:3 !important; }
   .asset-sticker { left:var(--mx,var(--x)); top:var(--my,var(--y)); width:var(--mw,var(--w)); transform:rotate(var(--mr,var(--r))); opacity:1; }
   .decor-paper { padding:4px; box-shadow:4px 5px 0 var(--blue-soft); }
+
+  .memories .decor-surface img:nth-child(1) { left:2%; top:86%; }
+  .memories .decor-surface img:nth-child(2) { left:78%; top:86%; }
+  .girl-gallery .decor-surface img:nth-child(3) { left:82%; top:42%; }
+  .facts .decor-surface img:nth-child(2) { left:78%; top:49%; }
 
   .hero { display:block; min-height:830px; padding-top:86px; padding-bottom:86px; }
   .hero-copy { width:var(--content); margin:auto; }
